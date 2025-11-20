@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/himan/Desktop/EDIT/pages/_app.js"],"sourcesContent":["import '../styles/globals.css'\nimport { useEffect } from 'react'\n\nfunction setInitialTheme() {\n  const saved = typeof window !== 'undefined' && localStorage.getItem('ft_theme')\n  if (saved) {\n    document.documentElement.classList.toggle('dark', saved === 'dark')\n  } else {\n    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches\n    document.documentElement.classList.toggle('dark', prefersDark)\n  }\n}\n\nexport default function App({ Component, pageProps }) {\n  useEffect(() => {\n    setInitialTheme()\n  }, [])\n  return <Component {...pageProps} />\n}\n"],"names":[],"mappings":";;;;;AACA;;;;AAEA,SAAS;IACP,MAAM,QAAQ,kDAAkB,eAAe,aAAa,OAAO,CAAC;IACpE;;SAEO;QACL,MAAM,cAAc,OAAO,UAAU,IAAI,OAAO,UAAU,CAAC,gCAAgC,OAAO;QAClG,SAAS,eAAe,CAAC,SAAS,CAAC,MAAM,CAAC,QAAQ;IACpD;AACF;AAEe,SAAS,IAAI,EAAE,SAAS,EAAE,SAAS,EAAE;IAClD,IAAA,gHAAS,EAAC;QACR;IACF,GAAG,EAAE;IACL,qBAAO,qKAAC;QAAW,GAAG,SAAS;;;;;;AACjC"}}]
+}

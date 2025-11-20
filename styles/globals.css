@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------- */
+/* Premium global gradient UI */
+/* -------------------------- */
+
+:root {
+  --bg1: #f2f7ff;
+  --bg2: #e6f0ff;
+  --card-light: rgba(255,255,255,0.65);
+  --border-light: rgba(255,255,255,0.4);
+}
+
+.dark {
+  --bg1: #0c1324;
+  --bg2: #0a1020;
+  --card-light: rgba(255,255,255,0.06);
+  --border-light: rgba(255,255,255,0.08);
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  font-family: Inter, system-ui, sans-serif;
+  background: radial-gradient(at top left, var(--bg1), var(--bg2));
+  transition: background .4s ease, color .4s ease;
+  color: #0f172a;
+}
+
+.dark body {
+  color: #e2e8f0;
+}
+
+/* Glass Card */
+.card {
+  @apply rounded-2xl p-6 shadow-xl backdrop-blur-xl;
+  background: var(--card-light);
+  border: 1px solid var(--border-light);
+}
+
+/* Primary Button */
+.btn-primary {
+  @apply inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-white tracking-wide;
+  background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+  box-shadow: 0 8px 20px rgba(14,165,233,0.25);
+  transition: 0.25s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Secondary Button */
+.small-btn {
+  @apply px-3 py-1.5 rounded-lg border text-sm bg-white/50 dark:bg-white/10;
+}
+
+/* Page layout container */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Smooth scaling on interactables */
+.interactive {
+  transition: transform .15s ease;
+}
+.interactive:active {
+  transform: scale(0.97);
+}
+
+/* Bottom navigation bar (mobile) */
+.bottom-nav {
+  @apply fixed bottom-0 left-0 right-0 flex justify-around items-center py-3 border-t bg-white/70 dark:bg-black/40 backdrop-blur-xl;
+  z-index: 40;
+}

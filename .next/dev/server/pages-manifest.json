@@ -1,0 +1,17 @@
+{
+  "/": "pages/index.js",
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/api/plan": "pages/api/plan.js",
+  "/dashboard": "pages/dashboard.js",
+  "/day/[day]": "pages/day/[day].js",
+  "/onboard/adaptation": "pages/onboard/adaptation.js",
+  "/onboard/equipment": "pages/onboard/equipment.js",
+  "/onboard/experience": "pages/onboard/experience.js",
+  "/onboard/frequency": "pages/onboard/frequency.js",
+  "/onboard/goal": "pages/onboard/goal.js",
+  "/onboard/style": "pages/onboard/style.js",
+  "/onboard/summary": "pages/onboard/summary.js",
+  "/onboard/time": "pages/onboard/time.js"
+}

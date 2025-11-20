@@ -1,0 +1,38 @@
+[00:00:00.706] Server  LOG      ✓ Ready in 468ms
+[00:00:09.521] Server  LOG      ○ Compiling / ...
+[00:00:11.390] Server  WARN     ⚠ Cross origin request detected from 10.50.13.199 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[00:00:59.261] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\on-demand-entry-handler.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:59.269] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:59.286] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:59.300] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:59.321] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:59.348] Server  ERROR   PageNotFoundError: Cannot find module for page: /weekly-plan
+[00:04:47.899] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\on-demand-entry-handler.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:47.902] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:47.903] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:47.905] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:47.906] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:47.908] Server  ERROR   PageNotFoundError: Cannot find module for page: /feedback-log
+[00:04:55.450] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\on-demand-entry-handler.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:55.452] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:55.453] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:55.454] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:55.455] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:04:55.457] Server  ERROR   PageNotFoundError: Cannot find module for page: /profile
+[00:05:00.592] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\on-demand-entry-handler.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:05:00.593] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:05:00.593] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:05:00.593] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:05:00.593] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:05:00.593] Server  ERROR   PageNotFoundError: Cannot find module for page: /weekly-plan
+[00:12:44.365] Server  LOG      ✓ Compiled in 31ms
+[00:12:53.223] Server  LOG      ✓ Compiled in 26ms
+[00:13:03.206] Server  LOG      ✓ Compiled in 24ms
+[00:13:12.577] Server  LOG      ✓ Compiled in 17ms
+[00:14:05.277] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\on-demand-entry-handler.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:14:05.278] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:14:05.279] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:14:05.279] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:14:05.280] Server  ERROR   C:\Users\himan\Desktop\EDIT\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:14:05.281] Server  ERROR   PageNotFoundError: Cannot find module for page: /weekly-plan
