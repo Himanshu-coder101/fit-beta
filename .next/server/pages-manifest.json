@@ -1,0 +1,13 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/dashboard": "pages/dashboard.js",
+  "/onboard/summary": "pages/onboard/summary.js",
+  "/onboard/adaptation": "pages/onboard/adaptation.js",
+  "/api/plan": "pages/api/plan.js",
+  "/onboard/style": "pages/onboard/style.js",
+  "/day/[day]": "pages/day/[day].js",
+  "/api/ai-refine-plan": "pages/api/ai-refine-plan.js",
+  "/onboard/equipment": "pages/onboard/equipment.js"
+}
