@@ -1,3 +1,4 @@
+// pages/day/[day].js - FIXED VERSION
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
@@ -8,7 +9,6 @@ import { saveSessionFeedback } from "../../lib/feedback";
 import { getExerciseWeight, setExerciseWeight } from "../../lib/weights";
 import { getAlternatives } from "../../lib/planGenerator";
 
-// Small icon helper based on exercise name
 function getIconForExercise(name) {
   name = name.toLowerCase();
   if (name.includes("squat")) return "🦵";
@@ -24,7 +24,6 @@ function getIconForExercise(name) {
   return "🔥";
 }
 
-// Muscle group color accents
 function getColorAccent(name) {
   name = name.toLowerCase();
   if (name.includes("squat") || name.includes("lunge")) return "bg-purple-500";
@@ -40,8 +39,6 @@ export default function DayPage() {
 
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Swap menu
   const [swapIndex, setSwapIndex] = useState(null);
   const [alts, setAlts] = useState([]);
 
@@ -54,6 +51,10 @@ export default function DayPage() {
         const index = Number(day) - 1;
         const s = plan.sessions?.[index];
         if (s) setSession(JSON.parse(JSON.stringify(s)));
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error loading session:", err);
         setLoading(false);
       });
   }, [day]);
@@ -105,7 +106,7 @@ export default function DayPage() {
       notes: f.notes.value,
     });
 
-    alert("Feedback saved. Your plan will adapt.");
+    alert("✅ Feedback saved. Your plan will adapt.");
     f.reset();
   }
 
@@ -114,7 +115,10 @@ export default function DayPage() {
       <>
         <Navbar />
         <main className="container p-8">
-          <p>Loading session…</p>
+          <div className="text-center py-20">
+            <div className="text-4xl mb-4">🏋️</div>
+            <p>Loading session…</p>
+          </div>
         </main>
       </>
     );
@@ -135,10 +139,8 @@ export default function DayPage() {
       <BottomNav />
 
       <main className="container mb-24">
-        {/* PAGE HEADER */}
         <h2 className="text-3xl font-bold mt-4 mb-6">{session.day}</h2>
 
-        {/* EXERCISE LIST */}
         <div className="grid gap-5">
           {session.exercises.map((ex, i) => {
             const savedWeight = getExerciseWeight(ex.name);
@@ -149,7 +151,6 @@ export default function DayPage() {
                 key={i}
                 className="rounded-3xl p-5 shadow-md bg-white/60 dark:bg-white/10 backdrop-blur-xl border border-white/30 dark:border-white/10 transition"
               >
-                {/* TOP ROW — icon + name + tag */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="text-3xl">{getIconForExercise(ex.name)}</div>
@@ -168,7 +169,6 @@ export default function DayPage() {
                   ></div>
                 </div>
 
-                {/* INFO PILLS */}
                 <div className="flex flex-wrap gap-2 mt-4 text-sm">
                   <div className="px-3 py-1 rounded-lg bg-slate-200 dark:bg-white/10">
                     {ex.sets} x {ex.reps}
@@ -195,7 +195,6 @@ export default function DayPage() {
                   <Tooltip label="Rest time between sets" />
                 </div>
 
-                {/* WEIGHT INPUT */}
                 <div className="mt-4 flex items-center gap-3">
                   <input
                     id={`w${i}`}
@@ -219,7 +218,6 @@ export default function DayPage() {
                   </span>
                 </div>
 
-                {/* SWAP BUTTON */}
                 <div className="mt-4">
                   <button
                     className="small-btn"
@@ -229,25 +227,28 @@ export default function DayPage() {
                   </button>
                 </div>
 
-                {/* SWAP PANEL */}
                 {swapIndex === i && (
                   <div className="mt-4 p-4 rounded-xl bg-slate-100 dark:bg-white/10 border border-white/20">
                     <h4 className="font-semibold mb-2">Choose alternative:</h4>
 
-                    <div className="grid gap-2">
-                      {alts.map((alt, ai) => (
-                        <button
-                          key={ai}
-                          className="p-3 rounded-xl bg-white dark:bg-white/5 border border-white/20 text-left hover:bg-ft-blue/10"
-                          onClick={() => applySwap(i, alt)}
-                        >
-                          <div className="font-semibold">{alt.name}</div>
-                          <div className="text-xs opacity-60">
-                            {(alt.equipment || []).join(", ")}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
+                    {alts.length === 0 ? (
+                      <p className="text-sm text-slate-600">No alternatives found for this exercise.</p>
+                    ) : (
+                      <div className="grid gap-2">
+                        {alts.map((alt, ai) => (
+                          <button
+                            key={ai}
+                            className="p-3 rounded-xl bg-white dark:bg-white/5 border border-white/20 text-left hover:bg-ft-blue/10"
+                            onClick={() => applySwap(i, alt)}
+                          >
+                            <div className="font-semibold">{alt.name}</div>
+                            <div className="text-xs opacity-60">
+                              {(alt.equipment || []).join(", ")}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
 
                     <button
                       onClick={() => setSwapIndex(null)}
@@ -262,7 +263,6 @@ export default function DayPage() {
           })}
         </div>
 
-        {/* FEEDBACK FORM */}
         <Card title="Session Feedback" className="mt-6">
           <form onSubmit={submitFeedback} className="grid gap-4">
 

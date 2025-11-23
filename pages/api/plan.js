@@ -1,53 +1,105 @@
-// pages/api/plan.js
-import { generateProfessionalPlan } from '../../lib/planGenerator';
+// pages/api/plan.js - FIXED VERSION
+const { generateProfessionalPlan } = require('../../lib/planGenerator');
 
-let savedPlan = null;
+let cachedPlan = null;
 
 export default async function handler(req, res) {
-  // POST — generate a new plan
-  if (req.method === 'POST') {
-    const profile = req.body || {};
-    const plan = generateProfessionalPlan(profile);
-
-    // Auto-refine if OpenAI key exists
-    if (process.env.OPENAI_API_KEY) {
-      try {
-        const refineUrl = process.env.VERCEL_URL
-          ? `https://${process.env.VERCEL_URL}/api/ai-refine-plan`
-          : 'http://localhost:3000/api/ai-refine-plan';
-
-        const refineRes = await fetch(refineUrl, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ plan, profile })
+  try {
+    if (req.method === 'POST') {
+      const profile = req.body || {};
+      
+      if (!profile.goal || !profile.experience) {
+        return res.status(400).json({ 
+          error: "Missing required fields: goal and experience" 
         });
-
-        if (refineRes.ok) {
-          const json = await refineRes.json();
-          const refined = json.refined || plan;
-          savedPlan = refined;
-          return res.status(200).json(refined);
-        }
-      } catch (err) {
-        console.warn("AI refine failed:", err.message);
       }
+
+      console.log("Generating plan for profile:", profile);
+
+      const plan = await generateProfessionalPlan(profile);
+      
+      if (!plan || !plan.sessions || plan.sessions.length === 0) {
+        throw new Error("Generated plan has no sessions");
+      }
+
+      plan.generatedAt = new Date().toISOString();
+      plan.profile = profile;
+      
+      cachedPlan = plan;
+      
+      console.log(`Successfully generated plan with ${plan.sessions.length} sessions`);
+      
+      return res.status(200).json(plan);
     }
 
-    savedPlan = plan;
-    return res.status(200).json(plan);
-  }
+    if (req.method === 'GET') {
+      if (cachedPlan) {
+        return res.status(200).json(cachedPlan);
+      }
 
-  // GET — return saved plan or create default one
-  if (!savedPlan) {
-    savedPlan = generateProfessionalPlan({
-      goal: 'General Fitness',
-      experience: 'beginner',
-      daysPerWeek: 3,
-      timePerSession: 40,
-      equipment: ['bodyweight']
+      const defaultProfile = {
+        goal: 'Muscle Gain',
+        experience: 'beginner',
+        daysPerWeek: 3,
+        timePerSession: 40,
+        equipment: ['bodyweight', 'dumbbell'],
+        style: 'balanced',
+        adaptationStyle: 'moderate'
+      };
+
+      console.log("No cached plan, generating default plan");
+      
+      const plan = await generateProfessionalPlan(defaultProfile);
+      plan.generatedAt = new Date().toISOString();
+      plan.profile = defaultProfile;
+      
+      cachedPlan = plan;
+      
+      return res.status(200).json(plan);
+    }
+
+    return res.status(405).json({ error: 'Method not allowed' });
+
+  } catch (error) {
+    console.error("Plan generation error:", error);
+    
+    return res.status(500).json({ 
+      error: error.message,
+      fallback: {
+        sessions: [
+          {
+            day: "Day 1 - Full Body",
+            exercises: [
+              {
+                name: "Push-Up",
+                sets: 3,
+                reps: 10,
+                intensity_pct: 70,
+                rest_sec: 90,
+                rir: 2,
+                notes: "Bodyweight compound movement",
+                equipment: ["bodyweight"],
+                muscle: "chest"
+              },
+              {
+                name: "Bodyweight Squat",
+                sets: 3,
+                reps: 15,
+                intensity_pct: 70,
+                rest_sec: 90,
+                rir: 2,
+                notes: "Lower body compound",
+                equipment: ["bodyweight"],
+                muscle: "legs"
+              }
+            ]
+          }
+        ],
+        meta: {
+          generatedAt: new Date().toISOString(),
+          generator: "fallback-emergency"
+        }
+      }
     });
   }
-
-  return res.status(200).json(savedPlan);
 }
-

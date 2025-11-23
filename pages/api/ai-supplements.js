@@ -1,13 +1,51 @@
-import OpenAI from 'openai';
+// pages/api/ai-supplements.js - Groq Integration
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
+  
   try {
-    const { userInputs } = JSON.parse(req.body);
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const prompt = `You are a sports nutritionist. Recommend supplements safe for most adults for:\nGoal: ${userInputs.goal}\nConstraints: ${JSON.stringify(userInputs.constraints || {})}\nReturn JSON [{name, dose, evidenceSummary}]`;
-    const completion = await openai.chat.completions.create({ model: 'gpt-4.1', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });
-    const content = completion.choices[0].message.content;
-    let json; try { json = JSON.parse(content); } catch (e) { return res.status(500).json({ error: 'AI JSON parse', content }); }
+    const { userInputs } = req.body;
+    
+    if (!process.env.GROQ_API_KEY) {
+      return res.status(200).json([
+        { name: "Protein Powder", dose: "25g post-workout", evidenceSummary: "Well-researched for muscle growth" },
+        { name: "Creatine", dose: "5g daily", evidenceSummary: "Improves strength and power" },
+        { name: "Vitamin D", dose: "2000 IU daily", evidenceSummary: "Supports bone health" }
+      ]);
+    }
+
+    const prompt = `You are a sports nutritionist. Recommend safe supplements for:
+Goal: ${userInputs.goal}
+
+Return ONLY valid JSON array:
+[
+  {"name": "Supplement", "dose": "Amount", "evidenceSummary": "Brief evidence"}
+]`;
+
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1000,
+      }),
+    });
+
+    if (!response.ok) throw new Error('API failed');
+
+    const data = await response.json();
+    let content = data.choices[0].message.content.trim();
+    content = content.replace(/```json\n?/g, "").replace(/```\n?/g, "");
+    
+    const json = JSON.parse(content);
     res.status(200).json(json);
-  } catch (e) { console.error(e); res.status(500).json({ error: e.message }); }
+    
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message });
+  }
 }
