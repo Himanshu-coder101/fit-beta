@@ -7,6 +7,27 @@ import Link from "next/link";
 import { summarizeFeedback } from "../lib/feedback";
 import { adaptExistingPlan } from "../lib/trainingEngine";
 
+async function enhanceWithAI() {
+  const res = await fetch("/api/ai-recs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userInputs: profile })
+  });
+
+  if (!res.ok) {
+    alert("AI could not enhance plan. (Quota exceeded / error)");
+    return;
+  }
+
+  const data = await res.json();
+  if (data.sessions) {
+    const enhanced = { ...plan, sessions: data.sessions };
+    setPlan(enhanced);
+    alert("AI-enhanced plan generated!");
+  }
+}
+
+
 export default function Dashboard() {
   const [plan, setPlan] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -107,23 +128,29 @@ export default function Dashboard() {
         {/* ------------------------------ */}
         <Card title="This Week’s Plan">
           <div className="grid gap-3">
-            {plan.sessions.map((session, idx) => (
-              <Link
-                href={`/day/${idx + 1}`}
-                key={idx}
-                className="interactive p-4 rounded-xl border bg-white/50 dark:bg-white/10 hover:shadow-md transition flex justify-between items-center"
-              >
-                <div>
-                  <h4 className="font-semibold">{session.day}</h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
-                    {session.exercises.length} exercises •{" "}
-                    {profile?.timePerSession || 40} mins
-                  </p>
-                </div>
+           {Array.isArray(plan?.sessions) ? (
+  plan.sessions.map((session, idx) => (
+    <Link
+      href={`/day/${idx + 1}`}
+      key={idx}
+      className="interactive p-4 rounded-xl border bg-white/50 dark:bg-white/10 hover:shadow-md transition flex justify-between items-center"
+    >
+      <div>
+        <h4 className="font-semibold">{session.day || `Day ${idx+1}`}</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
+          {(session.exercises?.length || 0)} exercises •{" "}
+          {profile?.timePerSession || 40} mins
+        </p>
+      </div>
 
-                <span className="text-xl">➡️</span>
-              </Link>
-            ))}
+      <span className="text-xl">➡️</span>
+    </Link>
+  ))
+) : (
+  <p className="text-red-500 text-sm">
+    Plan is missing sessions — try regenerating.
+  </p>
+)}
           </div>
         </Card>
 
