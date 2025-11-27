@@ -5,23 +5,63 @@ import Card from "../components/Card";
 import Link from "next/link";
 import { useSession } from 'next-auth/react';
 
+// Profile gate: redirects to "/" if required profile is missing
+function useProfileRequired() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    async function checkProfile() {
+      let complete = false;
+      // 1. Try localStorage (ft_profile)
+      const lf = localStorage.getItem("ft_profile");
+      if (lf) {
+        try {
+          const parsed = JSON.parse(lf);
+          if (parsed && parsed.name && parsed.gender && parsed.age && parsed.weight) {
+            complete = true;
+          }
+        } catch {}
+      }
+      // 2. Fallback: API check
+      if (!complete) {
+        const res = await fetch('/api/profile');
+        const apiProf = await res.json();
+        if (apiProf && apiProf.name && apiProf.gender && apiProf.age && apiProf.weight) {
+          localStorage.setItem("ft_profile", JSON.stringify(apiProf));
+          complete = true;
+        }
+      }
+      if (!complete) {
+        window.location.href = '/';
+      } else {
+        setReady(true);
+      }
+    }
+    checkProfile();
+    // eslint-disable-next-line
+  }, []);
+
+  return ready;
+}
+
 export default function Dashboard() {
   const { data: session } = useSession();
+  const ready = useProfileRequired();
+
   const [plan, setPlan] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!ready) return;
     const prof = localStorage.getItem("ft_profile");
     const pl = localStorage.getItem("ft_plan_v1");
-    
     if (prof) setProfile(JSON.parse(prof));
     if (pl) setPlan(JSON.parse(pl));
-    
     setLoading(false);
-  }, []);
+  }, [ready]);
 
-  if (loading) {
+  if (!ready || loading) {
     return (
       <>
         <Navbar />
@@ -56,7 +96,8 @@ export default function Dashboard() {
       <main className="container mt-4 mb-20 space-y-6">
         <div>
           <h1 className="text-4xl font-bold mb-2">
-            Welcome back{session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}! 💪
+            Welcome back
+            {session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}! 💪
           </h1>
           <p className="text-slate-600 dark:text-slate-300">
             Your AI training dashboard
