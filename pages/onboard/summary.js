@@ -22,10 +22,17 @@ export default function Summary() {
     };
 
     try {
+      // Automatically include previous feedback if exists
+      const feedbackRaw = localStorage.getItem('ft_feedback_v1');
+      const feedback = feedbackRaw ? JSON.parse(feedbackRaw).slice(0, 10) : null;
+      
       const res = await fetch("/api/plan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(profile)
+        body: JSON.stringify({
+          ...profile,
+          previousFeedback: feedback
+        })
       });
 
       const data = await res.json();
@@ -48,41 +55,60 @@ export default function Summary() {
       <Navbar />
       <BottomNav />
       <main className="container max-w-2xl mt-6 mb-24">
-        <h2 className="text-3xl font-bold mb-6">Review & Create</h2>
+        <h2 className="text-3xl font-bold mb-6">Review Your Plan</h2>
         <div className="card space-y-3">
-          <div className="flex justify-between">
-            <span>Goal:</span>
+          <div className="flex justify-between py-2 border-b border-slate-200 dark:border-slate-700">
+            <span className="text-slate-600 dark:text-slate-400">Goal:</span>
             <strong>{q.goal}</strong>
           </div>
-          <div className="flex justify-between">
-            <span>Experience:</span>
+          <div className="flex justify-between py-2 border-b border-slate-200 dark:border-slate-700">
+            <span className="text-slate-600 dark:text-slate-400">Experience:</span>
             <strong>{q.experience}</strong>
           </div>
-          <div className="flex justify-between">
-            <span>Days/week:</span>
+          <div className="flex justify-between py-2 border-b border-slate-200 dark:border-slate-700">
+            <span className="text-slate-600 dark:text-slate-400">Days/week:</span>
             <strong>{q.days}</strong>
           </div>
-          <div className="flex justify-between">
-            <span>Time:</span>
-            <strong>{q.time}</strong>
+          <div className="flex justify-between py-2 border-b border-slate-200 dark:border-slate-700">
+            <span className="text-slate-600 dark:text-slate-400">Time:</span>
+            <strong>{q.time} mins</strong>
           </div>
-          <div className="flex justify-between">
-            <span>Equipment:</span>
-            <strong>{q.equipment}</strong>
+          <div className="flex justify-between py-2">
+            <span className="text-slate-600 dark:text-slate-400">Equipment:</span>
+            <strong className="capitalize">{q.equipment?.replace('_', ' ')}</strong>
           </div>
 
           {error && (
-            <div className="mt-4 p-4 rounded-xl bg-red-100 text-red-700">
-              ❌ {error}
+            <div className="mt-4 p-4 rounded-xl bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300">
+              <strong>❌ Error:</strong> {error}
+              {error.includes('GROQ_API_KEY') && (
+                <p className="mt-2 text-sm">
+                  Get a free API key from: <a href="https://console.groq.com" target="_blank" className="underline">console.groq.com</a>
+                </p>
+              )}
             </div>
           )}
 
           <div className="mt-6 flex gap-3">
-            <button onClick={createPlan} className="btn-primary flex-1" disabled={loading}>
-              {loading ? "Creating..." : "🚀 Generate Plan"}
+            <button 
+              onClick={createPlan} 
+              className="btn-primary flex-1"
+              disabled={loading}
+            >
+              {loading ? "Creating your AI plan..." : "🚀 Generate My Plan"}
             </button>
-            <button onClick={() => router.back()} className="small-btn">Back</button>
+            <button 
+              onClick={() => router.back()} 
+              className="small-btn px-6"
+              disabled={loading}
+            >
+              Back
+            </button>
           </div>
+
+          <p className="text-xs text-center text-slate-500 dark:text-slate-400 mt-4">
+            Your plan will automatically adapt based on your workout feedback
+          </p>
         </div>
       </main>
     </>

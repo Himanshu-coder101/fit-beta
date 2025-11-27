@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import { useEffect } from 'react'
+import { SessionProvider } from 'next-auth/react'
 
 function setInitialTheme() {
   const saved = typeof window !== 'undefined' && localStorage.getItem('ft_theme')
@@ -11,9 +12,14 @@ function setInitialTheme() {
   }
 }
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps: { session, ...pageProps } }) {
   useEffect(() => {
     setInitialTheme()
   }, [])
-  return <Component {...pageProps} />
+  
+  return (
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
+    </SessionProvider>
+  )
 }

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Navbar() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
@@ -27,35 +29,43 @@ export default function Navbar() {
 
   return (
     <nav className="w-full px-6 py-4 flex items-center justify-between sticky top-0 z-40 backdrop-blur-xl bg-white/40 dark:bg-black/30 border-b border-white/20 dark:border-white/10">
-      <div className="flex items-center gap-3">
+      <Link href="/" className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ft-blue to-ft-teal flex items-center justify-center text-white font-bold shadow-xl">
           FT
         </div>
         <span className="font-semibold text-xl tracking-wide">FitTrack Pro</span>
-      </div>
+      </Link>
 
-      <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-        <Link
-          href="/dashboard"
-          className={`hover:text-ft-blue transition ${
-            router.pathname === "/dashboard" ? "text-ft-blue" : ""
-          }`}
-        >
-          Dashboard
-        </Link>
+      <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+          <Link
+            href="/dashboard"
+            className={`hover:text-ft-blue transition ${
+              router.pathname === "/dashboard" ? "text-ft-blue" : ""
+            }`}
+          >
+            Dashboard
+          </Link>
 
-        <Link
-          href="/weekly-plan"
-          className={`hover:text-ft-blue transition ${
-            router.pathname === "/weekly-plan" ? "text-ft-blue" : ""
-          }`}
-        >
-          Plan
-        </Link>
-
-        <Link href="/onboard/goal" className="btn-primary">
-          New Plan
-        </Link>
+          {!session ? (
+            <button onClick={() => signIn('google')} className="btn-primary">
+              Sign In
+            </button>
+          ) : (
+            <>
+              {session.user.image && (
+                <img 
+                  src={session.user.image} 
+                  alt={session.user.name}
+                  className="w-8 h-8 rounded-full"
+                />
+              )}
+              <button onClick={() => signOut()} className="small-btn">
+                Sign Out
+              </button>
+            </>
+          )}
+        </div>
 
         <button onClick={toggleTheme} className="small-btn">
           {theme === "dark" ? "🌙" : "☀️"}
